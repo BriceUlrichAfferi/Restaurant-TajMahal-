@@ -62,7 +62,11 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
                 .apply(requestOptions)
                 .into(holder.profilePictureImageView);
 
-
+// Increase the size of profilePictureImageView programmatically
+        ViewGroup.LayoutParams layoutParams = holder.profilePictureImageView.getLayoutParams();
+        layoutParams.width = 200;  // Set your desired width here
+        layoutParams.height = 200; // Set your desired height here
+        holder.profilePictureImageView.setLayoutParams(layoutParams);
 
 
     }

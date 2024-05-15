@@ -24,6 +24,9 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="hint_name">share here the details of your experience</string>
+    <string name="manon_garcia">Manon Garcia</string>
+    <string name="comment">Partagez ici les détails de votre expérience</string>
+    <string name="valider">Valider</string>
 
 
 </resources>

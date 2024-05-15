@@ -16,14 +16,6 @@
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-        <ImageButton
-            android:id="@+id/backButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"/>
-
     </androidx.appcompat.widget.Toolbar>
 
     <!-- NestedScrollView containing the rest of the layout -->
@@ -40,42 +32,46 @@
             <!-- Profile Image -->
             <ImageView
                 android:id="@+id/profile"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:contentDescription="profile_image_description"
                 android:scaleType="centerCrop"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/baseline_account_circle_24" />
+                android:background="@drawable/garcia" />
 
             <!-- Username EditText -->
-            <EditText
+            <TextView
                 android:id="@+id/username"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
                 android:layout_marginEnd="157dp"
-                android:hint="your name"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                android:text="@string/manon_garcia"
                 app:layout_constraintStart_toEndOf="@id/profile"
-                app:layout_constraintTop_toTopOf="@id/profile" />
+                app:layout_constraintTop_toTopOf="@id/profile"
+                app:layout_constraintTop_toBottomOf="@id/rating"/>
 
             <!-- RatingBar -->
             <RatingBar
                 android:id="@+id/rating"
+                style="?android:attr/ratingBarStyleIndicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:layout_marginStart="3dp"
                 android:numStars="5"
-                android:scaleX=".9"
-                android:scaleY=".9"
+                android:scaleX=".8"
+                android:scaleY=".8"
                 android:stepSize="0.10"
                 android:transformPivotX="0dp"
                 android:transformPivotY="0dp"
                 app:layout_constraintStart_toEndOf="@id/profile"
-                app:layout_constraintTop_toBottomOf="@id/username" />
+                app:layout_constraintTop_toBottomOf="@id/valider"
+
+                app:layout_constraintBottom_toBottomOf="@id/profile"/>
 
             <!-- Comment TextInputLayout -->
             <com.google.android.material.textfield.TextInputLayout
@@ -91,7 +87,7 @@
                     android:id="@+id/textField"
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
-                    android:hint="comment"
+                    android:hint="@string/comment"
                     android:inputType="text" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -101,22 +97,16 @@
                 android:id="@+id/valider"
                 style="@style/Widget.Material3.Chip.Suggestion"
                 android:layout_width="wrap_content"
-                android:layout_height="43dp"
-                android:layout_marginTop="27dp"
-                android:layout_marginStart="229dp"
-                android:text="Valider"
+                android:layout_height="wrap_content"
+                android:text="@string/valider"
                 android:textColor="@color/white"
                 android:textSize="12sp"
                 app:chipBackgroundColor="#CF2F2F"
                 app:chipCornerRadius="12dp"
                 app:chipStrokeColor="#CF2F2F"
-
-                app:layout_constraintRight_toRightOf="@+id/rating"
-                app:layout_constraintStart_toStartOf="@+id/username"
-                app:layout_constraintTop_toBottomOf="@id/profile"
-                app:layout_constraintBottom_toBottomOf="@id/profile"
-                app:layout_constraintTop_toTopOf="parent"
-
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/username"
+                android:layout_marginEnd="20dp"
                 />
             <!-- RecyclerView -->
             <androidx.recyclerview.widget.RecyclerView
