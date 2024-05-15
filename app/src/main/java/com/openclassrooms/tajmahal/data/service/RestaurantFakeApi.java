@@ -68,7 +68,7 @@ public class RestaurantFakeApi implements RestaurantApi {
      */
     @Override
     public List<Review> getReviews() {
-        return reviews;
+        return new ArrayList<>(reviews);
     }
 
 }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="roundedImageView">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item> <!-- Adjust the corner radius as needed -->
+    </style>
+
+    <style name="YellowRatingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressTint">@color/orange</item>
+        <item name="android:progressBackgroundTint">@color/orange</item>
+    </style>
+
+
+</resources>

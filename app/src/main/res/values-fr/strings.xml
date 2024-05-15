@@ -21,6 +21,8 @@
     <string name="icone_weekday">Icone weekday</string>
     <string name="icone_website">Icone website</string>
     <string name="phone_icon">Phone icon</string>
+    <string name="hint_name">partagez ici les détails de votre expérience</string>
+
 
 
 </resources>

@@ -5,6 +5,9 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.openclassrooms.tajmahal.data.service.RestaurantApi;
 import com.openclassrooms.tajmahal.domain.model.Restaurant;
+import com.openclassrooms.tajmahal.domain.model.Review;
+
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -47,8 +50,20 @@ public class RestaurantRepository {
      *
      * @return LiveData holding the restaurant details.
      */
+
+
+    //direct initialization, good If the data is static or doesn't change frequently.
+    //of type LiveData, because it gets data from Api
     public LiveData<Restaurant> getRestaurant() {
         return new MutableLiveData<>(restaurantApi.getRestaurant());
     }
 
+    //manual initialization, good If the data may change over time and you need to observe those changes.
+    public LiveData<List<Review>> getReviews() {
+        // Assuming restaurantApi.getReviews() returns a List<Review>
+        List<Review> reviews = restaurantApi.getReviews();
+        MutableLiveData<List<Review>> liveData = new MutableLiveData<>();
+        liveData.setValue(reviews);
+        return liveData;
+    }
 }
