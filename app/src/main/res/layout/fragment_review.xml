@@ -52,12 +52,12 @@
                 android:text="@string/manon_garcia"
                 app:layout_constraintStart_toEndOf="@id/profile"
                 app:layout_constraintTop_toTopOf="@id/profile"
-                app:layout_constraintTop_toBottomOf="@id/rating"/>
+                app:layout_constraintTop_toBottomOf="@id/rating17"/>
 
             <!-- RatingBar -->
             <RatingBar
-                android:id="@+id/rating"
-                style="?android:attr/ratingBarStyleIndicator"
+                android:id="@+id/rating17"
+                style="?android:attr/ratingBarStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
@@ -65,12 +65,11 @@
                 android:numStars="5"
                 android:scaleX=".8"
                 android:scaleY=".8"
-                android:stepSize="0.10"
+                android:stepSize="1.0"
                 android:transformPivotX="0dp"
                 android:transformPivotY="0dp"
                 app:layout_constraintStart_toEndOf="@id/profile"
                 app:layout_constraintTop_toBottomOf="@id/valider"
-
                 app:layout_constraintBottom_toBottomOf="@id/profile"/>
 
             <!-- Comment TextInputLayout -->

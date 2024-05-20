@@ -14,6 +14,9 @@ import javax.inject.Singleton;
 
 
 /**
+ * Ici nous avons la logique pour la recuperation des donnees depuis lApi selon les modeles Restauant et Review
+ *
+ *
  * This is the repository class for managing restaurant data. Repositories are responsible
  * for coordinating data operations from data sources such as network APIs, databases, etc.
  *

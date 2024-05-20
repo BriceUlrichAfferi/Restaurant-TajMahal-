@@ -27,7 +27,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 @HiltViewModel
 public class DetailsViewModel extends ViewModel {
 
-    private final RestaurantRepository restaurantRepository;
+    public RestaurantRepository restaurantRepository;
 
     /**
      * Constructor that Hilt will use to create an instance of MainViewModel.

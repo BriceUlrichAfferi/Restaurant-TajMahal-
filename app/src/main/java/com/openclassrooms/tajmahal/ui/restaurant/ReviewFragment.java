@@ -1,7 +1,5 @@
 package com.openclassrooms.tajmahal.ui.restaurant;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -20,10 +18,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
@@ -39,21 +35,24 @@ public class ReviewFragment extends Fragment {
 
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_IMAGE_PICK = 2;
-    private FragmentReviewBinding binding;
-    private ReviewAdapter reviewAdapter;
+    public FragmentReviewBinding binding;
+    public ReviewAdapter reviewAdapter;
     private static final int REQUEST_PICK_IMAGE = 1001;
     private Uri selectedImageUri;
 
 
-    private Chip valider;
-    private TextInputEditText textField;
+    public Chip valider;
+    public TextInputEditText textField;
     private RecyclerView recyclerView;
+
+    public ReviewFragment() {
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentReviewBinding.inflate(inflater, container, false);
-
 
         // Setup toolbar
         // Setup toolbar
@@ -96,12 +95,9 @@ public class ReviewFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // Navigate back to the previous fragment
-                Log.d("ReviewFragment", "Back button clicked");
                 getParentFragmentManager().popBackStack();
             }
         });
-
-
 
         // Increase the size of profile Image programmatically
         ImageView profileImageView = binding.getRoot().findViewById(R.id.profile);
@@ -110,36 +106,40 @@ public class ReviewFragment extends Fragment {
         layoutParams.height = 200; // Set your desired height here (in pixels)
         profileImageView.setLayoutParams(layoutParams);
 
+        // Initialize views outside the observer
+        valider = binding.valider;
+        textField = binding.textField;
+        recyclerView = binding.recyclerView;
 
+        // Set click listener for valider chip
+        valider.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                validateAndAddReview();
+            }
+        });
 
         // Observe the LiveData for reviews and update the adapter when data changes
         detailsViewModel.getRestaurantReviews().observe(getViewLifecycleOwner(), reviews -> {
             reviewAdapter.setReviewList(reviews);
-
-            valider = binding.valider.findViewById(R.id.valider);
-            //textField = binding.textField.findViewById(R.id.textField);
-            recyclerView = binding.recyclerView.findViewById(R.id.recyclerView);
-
-
-            valider.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    validateAndAddReview();
-                }
-            });
-
         });
-
-
     }
 
-    private void validateAndAddReview() {
+
+    public void validateAndAddReview() {
+        /*if (binding == null) {
+            Log.e("ReviewFragment", "Binding is null");
+            return;
+        }
+
+        if (binding.textField == null || binding.username == null || binding.rating17 == null) {
+            return;
+        }*/
         // Retrieve input from TextInputEditText
         String comment = binding.textField.getText().toString().trim();
         String username = binding.username.getText().toString().trim();
-
         // Validate username
-        if (username.isEmpty()) {
+        /*if (username.isEmpty()) {
             // Show a Snackbar if the username is empty
             Snackbar.make(
                     requireView(),
@@ -147,10 +147,10 @@ public class ReviewFragment extends Fragment {
                     Snackbar.LENGTH_LONG
             ).setAnchorView(R.id.valider).show();
             return; // Exit the method if the username is empty
-        }
+        }*/
 
         // Validate comment
-        if (comment.isEmpty()) {
+      /*  if (comment.isEmpty()) {
             // Show a Snackbar if the comment is empty
             Snackbar.make(
                     requireView(),
@@ -158,10 +158,11 @@ public class ReviewFragment extends Fragment {
                     Snackbar.LENGTH_LONG
             ).setAnchorView(R.id.valider).show();
             return; // Exit the method if the comment is empty
-        }
+        }*/
 
 // Retrieve the rating from the RatingBar
-        float rating = binding.rating.getRating();
+        float rating = binding.rating17.getRating();
+       // Log.d("ReviewFragment", "Rating retrieved: " + rating);  // Add logging
 
         // Both username and comment are not empty, proceed to create and add the review
         // Create a new Review object
@@ -171,6 +172,8 @@ public class ReviewFragment extends Fragment {
         } else {
             newReview = new Review(username, "Picture URL", comment, (int) rating);
         }
+
+        //Log.d("ReviewFragment", "Review added: " + newReview.getRate());  // Add logging
         // Add the new Review to your RecyclerView's dataset
         // Assuming reviewAdapter is your RecyclerView adapter
         reviewAdapter.addItem(newReview);
@@ -178,12 +181,12 @@ public class ReviewFragment extends Fragment {
         // Clear the TextInputEditText after adding the review
         binding.textField.setText("");
         binding.username.setText("");
-        binding.rating.setRating(0);
+        binding.rating17.setRating(0);
 
-        // Load the default profile picture into the profile ImageView
+        /*// Load the default profile picture into the profile ImageView
         Glide.with(requireContext())
                 .load(R.drawable.baseline_account_circle_24)
-                .into(binding.profile);
+                .into(binding.profile);*/
 
     }
 

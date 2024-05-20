@@ -26,7 +26,7 @@ import java.util.List;
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder> {
 
 
-    private List<Review> reviewList = new ArrayList<>();
+    public List<Review> reviewList = new ArrayList<>();
 
 
     public ReviewAdapter(List<Review> reviewList) {
@@ -53,8 +53,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
 
         RequestOptions requestOptions = new RequestOptions()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .placeholder(R.drawable.baseline_account_circle_24)
-                .error(R.drawable.baseline_error_24);;
+                .placeholder(R.drawable.garcia);
 
         Glide.with(holder.itemView.getContext())
                 .load(review.getPicture())
@@ -62,7 +61,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
                 .apply(requestOptions)
                 .into(holder.profilePictureImageView);
 
-// Increase the size of profilePictureImageView programmatically
+// Increase the size of profilePictureImageView
         ViewGroup.LayoutParams layoutParams = holder.profilePictureImageView.getLayoutParams();
         layoutParams.width = 200;  // Set your desired width here
         layoutParams.height = 200; // Set your desired height here
@@ -84,8 +83,9 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
         if (reviewList == null) {
             reviewList = new ArrayList<>();
         }
-        reviewList.add(review);
-        notifyItemInserted(reviewList.size() - 1);
+        reviewList.add(0, review);
+        notifyItemInserted(0);
+        //notifyItemInserted(reviewList.size() - 1);
     }
 
 

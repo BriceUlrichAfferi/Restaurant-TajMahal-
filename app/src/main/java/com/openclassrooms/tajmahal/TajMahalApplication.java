@@ -6,6 +6,10 @@ import dagger.hilt.android.HiltAndroidApp;
 
 /**
  * The main application class for the TajMahal project.
+ *
+ *La classe TajMahalApplication étend la classe Application dans Android
+  pour effectuer une configuration et une gestion à l'échelle de l'application.
+ *
  * <p>
  * This class is annotated with {@code @HiltAndroidApp}, marking it as the entry point
  * for Dagger-Hilt dependency injection. By extending the {@code Application} class
