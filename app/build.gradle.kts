@@ -88,6 +88,9 @@ dependencies {
     implementation("com.google.dagger:hilt-android:$hiltVersion")
     testImplementation ("org.robolectric:robolectric:4.5.1")
 
+    // Idling Resource dependency if needed
+    androidTestImplementation ("androidx.test.espresso:espresso-idling-resource:3.4.0")
+
     // Hilt testing dependencies
     androidTestImplementation("com.google.dagger:hilt-android-testing:$hiltVersion")
     testAnnotationProcessor("com.google.dagger:hilt-compiler:$hiltVersion")

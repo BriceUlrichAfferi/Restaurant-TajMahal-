@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,31 +29,19 @@ import com.openclassrooms.tajmahal.domain.model.Review;
 
 import java.util.ArrayList;
 
-
 public class ReviewFragment extends Fragment {
 
-    private static final int REQUEST_IMAGE_CAPTURE = 1;
-    private static final int REQUEST_IMAGE_PICK = 2;
     public FragmentReviewBinding binding;
     public ReviewAdapter reviewAdapter;
-    private static final int REQUEST_PICK_IMAGE = 1001;
-    private Uri selectedImageUri;
+    public DetailsViewModel detailsViewModel;
+    public Uri selectedImageUri;
 
-
-    public Chip valider;
-    public TextInputEditText textField;
-    private RecyclerView recyclerView;
-
-    public ReviewFragment() {
-    }
+    public ReviewFragment() {}
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentReviewBinding.inflate(inflater, container, false);
 
-        // Setup toolbar
         // Setup toolbar
         Toolbar toolbar = binding.toolbar;
         ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
@@ -66,14 +53,12 @@ public class ReviewFragment extends Fragment {
         return binding.getRoot();
     }
 
-
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         // Initialize ViewModel
-        DetailsViewModel detailsViewModel = new ViewModelProvider(requireActivity()).get(DetailsViewModel.class);
+        detailsViewModel = new ViewModelProvider(requireActivity()).get(DetailsViewModel.class);
 
         // Initialize RecyclerView adapter and set layout manager
         reviewAdapter = new ReviewAdapter(new ArrayList<>());
@@ -87,37 +72,25 @@ public class ReviewFragment extends Fragment {
         ActionBar actionBar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.baseline_arrow_back_24); // Replace with your back arrow drawable
+            actionBar.setHomeAsUpIndicator(R.drawable.baseline_arrow_back_24);
         }
 
         // Handle back button click
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Navigate back to the previous fragment
-                getParentFragmentManager().popBackStack();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> getParentFragmentManager().popBackStack());
 
         // Increase the size of profile Image programmatically
         ImageView profileImageView = binding.getRoot().findViewById(R.id.profile);
         ViewGroup.LayoutParams layoutParams = profileImageView.getLayoutParams();
-        layoutParams.width = 200;  // Set your desired width here (in pixels)
-        layoutParams.height = 200; // Set your desired height here (in pixels)
+        layoutParams.width = 200;  // Set your desired width here
+        layoutParams.height = 200; // Set your desired height here
         profileImageView.setLayoutParams(layoutParams);
 
         // Initialize views outside the observer
-        valider = binding.valider;
-        textField = binding.textField;
-        recyclerView = binding.recyclerView;
+        Chip valider = binding.valider;
+        TextInputEditText textField = binding.textField;
 
         // Set click listener for valider chip
-        valider.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                validateAndAddReview();
-            }
-        });
+        valider.setOnClickListener(v -> validateAndAddReview());
 
         // Observe the LiveData for reviews and update the adapter when data changes
         detailsViewModel.getRestaurantReviews().observe(getViewLifecycleOwner(), reviews -> {
@@ -125,71 +98,39 @@ public class ReviewFragment extends Fragment {
         });
     }
 
-
     public void validateAndAddReview() {
-        /*if (binding == null) {
-            Log.e("ReviewFragment", "Binding is null");
-            return;
-        }
-
-        if (binding.textField == null || binding.username == null || binding.rating17 == null) {
-            return;
-        }*/
-        // Retrieve input from TextInputEditText
         String comment = binding.textField.getText().toString().trim();
         String username = binding.username.getText().toString().trim();
-        // Validate username
-        /*if (username.isEmpty()) {
-            // Show a Snackbar if the username is empty
-            Snackbar.make(
-                    requireView(),
-                    "Username must not be empty",
-                    Snackbar.LENGTH_LONG
-            ).setAnchorView(R.id.valider).show();
-            return; // Exit the method if the username is empty
-        }*/
-
-        // Validate comment
-      /*  if (comment.isEmpty()) {
-            // Show a Snackbar if the comment is empty
-            Snackbar.make(
-                    requireView(),
-                    "Comment must not be empty",
-                    Snackbar.LENGTH_LONG
-            ).setAnchorView(R.id.valider).show();
-            return; // Exit the method if the comment is empty
-        }*/
-
-// Retrieve the rating from the RatingBar
         float rating = binding.rating17.getRating();
-       // Log.d("ReviewFragment", "Rating retrieved: " + rating);  // Add logging
 
-        // Both username and comment are not empty, proceed to create and add the review
-        // Create a new Review object
-        Review newReview;
-        if (selectedImageUri != null) {
-            newReview = new Review(username, selectedImageUri.toString(), comment, (int) rating);
-        } else {
-            newReview = new Review(username, "Picture URL", comment, (int) rating);
+        // Validate username
+        if (username.isEmpty()) {
+            Snackbar.make(requireView(), "Username must not be empty", Snackbar.LENGTH_LONG)
+                    .setAnchorView(R.id.valider).show();
+            return;
         }
 
-        //Log.d("ReviewFragment", "Review added: " + newReview.getRate());  // Add logging
-        // Add the new Review to your RecyclerView's dataset
-        // Assuming reviewAdapter is your RecyclerView adapter
-        reviewAdapter.addItem(newReview);
+        // Validate comment
+        if (comment.isEmpty()) {
+            Snackbar.make(requireView(), "Comment must not be empty", Snackbar.LENGTH_LONG)
+                    .setAnchorView(R.id.valider).show();
+            return;
+        }
 
-        // Clear the TextInputEditText after adding the review
+        // Create a new Review object
+        Review newReview = new Review(username,
+                selectedImageUri != null ? selectedImageUri.toString() : "Picture URL",
+                comment,
+                (int) rating);
+
+        // Add the new Review to the ViewModel
+        detailsViewModel.addReview(newReview);
+
+        // Clear the input fields after adding the review
         binding.textField.setText("");
         binding.username.setText("");
         binding.rating17.setRating(0);
-
-        /*// Load the default profile picture into the profile ImageView
-        Glide.with(requireContext())
-                .load(R.drawable.baseline_account_circle_24)
-                .into(binding.profile);*/
-
     }
-
 
     @Override
     public void onDestroyView() {

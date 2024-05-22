@@ -26,8 +26,7 @@ import java.util.List;
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder> {
 
 
-    public List<Review> reviewList = new ArrayList<>();
-
+    public List<Review> reviewList;
 
     public ReviewAdapter(List<Review> reviewList) {
         this.reviewList = reviewList;

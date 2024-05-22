@@ -3,6 +3,7 @@ package com.openclassrooms.tajmahal.ui.restaurant;
 import android.content.Context;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.openclassrooms.tajmahal.R;
@@ -12,6 +13,7 @@ import com.openclassrooms.tajmahal.domain.model.Review;
 
 import javax.inject.Inject;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -51,6 +53,11 @@ public class DetailsViewModel extends ViewModel {
     public LiveData<List<Review>> getRestaurantReviews() {
         return restaurantRepository.getReviews();
     }
+
+    public void addReview(Review review) {
+        restaurantRepository.addReview(review);
+    }
+
 
     /**
      * Retrieves the current day of the week in French.
