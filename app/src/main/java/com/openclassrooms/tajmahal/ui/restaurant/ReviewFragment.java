@@ -42,7 +42,6 @@ public class ReviewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentReviewBinding.inflate(inflater, container, false);
 
-        // Setup toolbar
         Toolbar toolbar = binding.toolbar;
         ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
         ActionBar actionBar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
@@ -57,16 +56,13 @@ public class ReviewFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Initialize ViewModel
         detailsViewModel = new ViewModelProvider(requireActivity()).get(DetailsViewModel.class);
 
-        // Initialize RecyclerView adapter and set layout manager
         reviewAdapter = new ReviewAdapter(new ArrayList<>());
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.recyclerView.setAdapter(reviewAdapter);
         binding.recyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
 
-        // Set up the toolbar
         Toolbar toolbar = binding.toolbar;
         ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
         ActionBar actionBar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
@@ -75,61 +71,33 @@ public class ReviewFragment extends Fragment {
             actionBar.setHomeAsUpIndicator(R.drawable.baseline_arrow_back_24);
         }
 
-        // Handle back button click
         toolbar.setNavigationOnClickListener(v -> getParentFragmentManager().popBackStack());
 
-        // Increase the size of profile Image programmatically
         ImageView profileImageView = binding.getRoot().findViewById(R.id.profile);
         ViewGroup.LayoutParams layoutParams = profileImageView.getLayoutParams();
-        layoutParams.width = 200;  // Set your desired width here
-        layoutParams.height = 200; // Set your desired height here
+        layoutParams.width = 200;
+        layoutParams.height = 200;
         profileImageView.setLayoutParams(layoutParams);
 
-        // Initialize views outside the observer
         Chip valider = binding.valider;
         TextInputEditText textField = binding.textField;
 
-        // Set click listener for valider chip
-        valider.setOnClickListener(v -> validateAndAddReview());
+        valider.setOnClickListener(v -> {
+            //Captures user input and passes it to the ViewModel
+            String comment = binding.textField.getText().toString().trim();
+            String username = binding.username.getText().toString().trim();
+            float rating = binding.rating17.getRating();
+            detailsViewModel.validateAndAddReview(username, comment, rating, selectedImageUri);
 
-        // Observe the LiveData for reviews and update the adapter when data changes
+            // Clear the input fields after adding the review
+            binding.textField.setText("");
+            binding.rating17.setRating(0);
+        });
+
         detailsViewModel.getRestaurantReviews().observe(getViewLifecycleOwner(), reviews -> {
             reviewAdapter.setReviewList(reviews);
         });
-    }
 
-    public void validateAndAddReview() {
-        String comment = binding.textField.getText().toString().trim();
-        String username = binding.username.getText().toString().trim();
-        float rating = binding.rating17.getRating();
-
-        // Validate username
-        if (username.isEmpty()) {
-            Snackbar.make(requireView(), "Username must not be empty", Snackbar.LENGTH_LONG)
-                    .setAnchorView(R.id.valider).show();
-            return;
-        }
-
-        // Validate comment
-        if (comment.isEmpty()) {
-            Snackbar.make(requireView(), "Comment must not be empty", Snackbar.LENGTH_LONG)
-                    .setAnchorView(R.id.valider).show();
-            return;
-        }
-
-        // Create a new Review object
-        Review newReview = new Review(username,
-                selectedImageUri != null ? selectedImageUri.toString() : "Picture URL",
-                comment,
-                (int) rating);
-
-        // Add the new Review to the ViewModel
-        detailsViewModel.addReview(newReview);
-
-        // Clear the input fields after adding the review
-        binding.textField.setText("");
-        binding.username.setText("");
-        binding.rating17.setRating(0);
     }
 
     @Override

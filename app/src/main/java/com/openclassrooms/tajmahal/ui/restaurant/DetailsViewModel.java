@@ -1,6 +1,7 @@
 package com.openclassrooms.tajmahal.ui.restaurant;
 
 import android.content.Context;
+import android.net.Uri;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -31,21 +32,13 @@ public class DetailsViewModel extends ViewModel {
 
     public RestaurantRepository restaurantRepository;
 
-    /**
-     * Constructor that Hilt will use to create an instance of MainViewModel.
-     *
-     * @param restaurantRepository The repository which will provide restaurant data.
-     */
+    private MutableLiveData<String> validationMessage = new MutableLiveData<>();
+
     @Inject
     public DetailsViewModel(RestaurantRepository restaurantRepository) {
         this.restaurantRepository = restaurantRepository;
     }
 
-    /**
-     * Fetches the details of the Taj Mahal restaurant.
-     *
-     * @return LiveData object containing the details of the Taj Mahal restaurant.
-     */
     public LiveData<Restaurant> getTajMahalRestaurant() {
         return restaurantRepository.getRestaurant();
     }
@@ -54,16 +47,35 @@ public class DetailsViewModel extends ViewModel {
         return restaurantRepository.getReviews();
     }
 
-    public void addReview(Review review) {
+    public LiveData<String> getValidationMessage() {
+        return validationMessage;
+    }
+
+    public void validateAndAddReview(String username, String comment, float rating, Uri selectedImageUri) {
+        if (username.isEmpty()) {
+            validationMessage.setValue("Username must not be empty");
+            return;
+        }
+
+        if (comment.isEmpty()) {
+            validationMessage.setValue("Comment must not be empty");
+            return;
+        }
+
+        Review newReview = new Review(username,
+                selectedImageUri != null ? selectedImageUri.toString() : "Picture URL",
+                comment,
+                (int) rating);
+
+        addReview(newReview);
+
+        validationMessage.setValue(""); // Clear the validation message
+    }
+
+    private void addReview(Review review) {
         restaurantRepository.addReview(review);
     }
 
-
-    /**
-     * Retrieves the current day of the week in French.
-     *
-     * @return A string representing the current day of the week in French.
-     */
     public String getCurrentDay(Context context) {
         Calendar calendar = Calendar.getInstance();
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
@@ -96,5 +108,4 @@ public class DetailsViewModel extends ViewModel {
         }
         return dayString;
     }
-
 }
